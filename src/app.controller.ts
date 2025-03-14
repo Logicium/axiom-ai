@@ -14,4 +14,9 @@ export class AppController {
   async postInference(@Body() body: any) {
     return this.appService.postInference(body.question,body.passage);
   }
+
+  @Post('generate')
+  async postGenerate(@Body() body: any){
+    return this.appService.generateInterpret(body.question,body.passage);
+  }
 }
