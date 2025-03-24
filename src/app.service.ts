@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import * as QNA from '@tensorflow-models/qna';
 import '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-cpu';
-
+import {GoogleGenerativeAI} from '@google/generative-ai';
+import * as process from "process";
 import { pipeline } from '@huggingface/transformers';
 
 @Injectable()
@@ -18,6 +19,16 @@ export class AppService {
     const answers = await model.findAnswers(question, passage);
     console.log('Answers: ',answers);
     return answers;
+  }
+
+  async generateGeminiResponse(dream: string){
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? 'api_key');
+    const model = genAI.getGenerativeModel({model:"gemini-2.0-flash"})
+    const prompt = "Explain the meaning of this dream: "+ dream;
+
+    const result = await model.generateContent(prompt);
+    console.log(result.response.text());
+    return result.response.text();
   }
 
   async generateInterpret(question:string,passage:string){

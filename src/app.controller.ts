@@ -17,6 +17,6 @@ export class AppController {
 
   @Post('generate')
   async postGenerate(@Body() body: any){
-    return this.appService.generateInterpret(body.question,body.passage);
+    return this.appService.generateGeminiResponse(body.dream);
   }
 }
